@@ -1,21 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:user_management/src/core/background_helper.dart';
 import 'package:user_management/src/features/users/views/user_view.dart';
 
-void main() {
-  HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
-}
+Worker? worker;
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  worker = await Worker.spawn();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

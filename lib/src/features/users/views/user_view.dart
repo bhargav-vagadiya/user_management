@@ -10,13 +10,13 @@ class UserView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ChangeNotifierProvider(
-          create: (context) => UserProvider()..getUsers(),
-          builder: (context, child) {
-            var provider = Provider.of<UserProvider>(context);
-            return provider.isLoading
+    return SafeArea(
+      child: ChangeNotifierProvider(
+        create: (context) => UserProvider()..getUsers(),
+        builder: (context, child) {
+          var provider = Provider.of<UserProvider>(context);
+          return Scaffold(
+            body: provider.isLoading
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
@@ -86,9 +86,16 @@ class UserView extends StatelessWidget {
                           ),
                         )
                     ],
-                  );
-          },
-        ),
+                  ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                var provider =
+                    Provider.of<UserProvider>(context, listen: false);
+                provider.getUsers();
+              },
+            ),
+          );
+        },
       ),
     );
   }
